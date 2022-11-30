@@ -1,0 +1,24 @@
+
+author : ceefar
+started : 30/11/2022
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+[day-1]
+
+- setup window display basics
+- setup initial user name image manipulation (slice/crop, save, resize, etc)
+- setup preprocessing (greyscale, considered blur but have removed it now)
+- setup threshold initial test choices (will run 5 or 6 thresholds to start alongside more advanced preprocessing and img manipulation in future to prepare images for ocr)
+- setup initial ocr
+- use ocr to username to img filename string
+- adds name to filename string
+- spend most time checking a few tutorials, reading up on ocr, and then testing things out and playing around with things initially, as well as a quick catch up on matplotlib since is useful for plotting
+
+
+
+
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
