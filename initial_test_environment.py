@@ -105,6 +105,13 @@ if __name__ == "__main__":
     main()
 
 
+# [rnrn]
+# - no cap before doing below notes
+# - do the two previous repo readmes, improve the profile readme, etc
+# - defo do gif stuff
+# - try to get pages for old nhs app looking clean as you really arent doing it justice
+# - consider a projects readme repo (which will make a webpage over the christmas as a project)
+
 
 # [notes]
 # get it into folders so its not annoying af
