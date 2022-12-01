@@ -18,18 +18,6 @@ from matplotlib import pyplot as plt # < will use for plotting shortly
 # [setup tesseract]
 pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" # < [ REQUIREMENT ]
 
-# # [vars]
-# original_img_1 = cv2.imread("profile_stats_test_image_1.png")
-# image_1 = original_img_1.copy()
-# original_img_2 = cv2.imread("profile_stats_test_image_2.png")
-# image_2 = original_img_2.copy()
-# original_img_3 = cv2.imread("profile_stats_test_image_3.png")
-# image_3 = original_img_3.copy()
-# original_img_4 = cv2.imread("profile_stats_test_image_4.png")
-# image_4 = original_img_4.copy()
-# original_img_5 = cv2.imread("profile_stats_test_image_5.png")
-# image_5 = original_img_5.copy()
-
 # [funcs]
 # -- handle windows --
 def create_window(name:str="Preview"):
@@ -130,9 +118,9 @@ def main(img):
     show_img_in_window(profile_name_img)
     show_img_in_window(profile_name_img_grey)
     # -- initialise these first so we can send them and get them back seperately -- 
-    un, un_grey = "", ""
+    un, un_grey = "", "" # un = username
     # -- draw word boxes --
-    un = draw_word_boxes(profile_name_img, un) # un = username
+    un = draw_word_boxes(profile_name_img, un) 
     un_grey = draw_word_boxes(profile_name_img_grey, un_grey)
     # -- create a user directory if we dont have one already for this user --
     user_dir = make_user_dir(un)
@@ -155,6 +143,8 @@ if __name__ == "__main__":
 # - do actually need a larger set of test images yanno
 # - chunk up the function a bit
 # - test with all test imgs
+# - this kids tut, various tuts, various stackoverflow
+# - yo cant wait to do multithreading yanno, this is guna be so sick
 
 
 
