@@ -142,16 +142,14 @@ def main(img):
     
 # [driver]
 if __name__ == "__main__":
-    # img_list = [image_1, image_2, image_3, image_4, image_5]
-    img_list = [image_1]
+    img_list = [image_1, image_2, image_3, image_4, image_5]
     for img in img_list:
         main(img)
 
 
 
 # [todo]
-# - add to changelog what ive done... i.e. first grab some comparative images so can test this appropriately at various stages
-
+# - do actually need a larger set of test images yanno
 # - chunk up the function a bit
 # - test with all test imgs
 
