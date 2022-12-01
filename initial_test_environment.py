@@ -12,13 +12,14 @@ import cv2
 from pytesseract import pytesseract
 from pytesseract import Output
 import numpy as np # technically only using right now for the type hints btw
-# from matplotlib import pyplot as plt # < will use for plotting shortly
+import os # for file handling
+from matplotlib import pyplot as plt # < will use for plotting shortly
 
 # [setup tesseract]
 pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" # < [ REQUIREMENT ]
 
 # [vars]
-original_img = cv2.imread("profile_stats_test_image_1.png.png")
+original_img = cv2.imread("profile_stats_test_image_1.png")
 image = original_img.copy()
 
 # [funcs]
@@ -79,6 +80,26 @@ def draw_word_boxes(img):
     # -- return the user name --
     return active_user_name
 
+# -- get or make directory --
+def make_directory(ocr_user_name:str, type:str="userdir"):
+    """ type
+        - `userdir` : default
+            - create a folder for this user to store their data locally in an organised manner
+        - `userroot` 
+            - create the root folder for all user directories so things are appropriately organised """
+    # -- if this user doesnt have a folder already, create it --
+    try:
+        if type == "userdir":
+            os.mkdir(f"{ocr_user_name}_data")
+        elif type == "userroot":
+            os.mkdir(f"user_data")            
+    # -- if we throw this exception we already have the folder, so just pass --
+    except FileExistsError:
+            pass
+    # -- regardless of if we made the folder now or not, return the directory --
+    finally:
+        return f"{ocr_user_name}_data"
+
 # -- main -- 
 def main():
     """ by the way this is really still just me testing out the functionality """
@@ -92,17 +113,19 @@ def main():
     show_img_in_window(profile_name_img)
     show_img_in_window(profile_name_img_grey)
     # -- draw word boxes --
-    print(f"\noriginal version (cropped)")
     un = draw_word_boxes(profile_name_img) # un = username
-    print(f"\ngrey version")
     un_grey = draw_word_boxes(profile_name_img_grey)
-    # -- save images --
-    cv2.imwrite(f"profile_{un}_img.png", profile_name_img)
-    cv2.imwrite(f"profile_{un_grey}_img_grey.png", profile_name_img_grey)
+    # -- create a user directory if we dont have one already for this user --
+    user_dir = make_directory(un)
 
+    # -- save images --
+    cv2.imwrite(f"user_data/{user_dir}/profile_{un}_img.png", profile_name_img)
+    cv2.imwrite(f"user_data/{user_dir}/profile_{un_grey}_img_grey.png", profile_name_img_grey)
+    
 # [driver]
 if __name__ == "__main__":
     main()
+
 
 
 # [rnrn]
@@ -129,3 +152,19 @@ if __name__ == "__main__":
 # - then ig try and get that grid thing setup again, but maybe even better?! (can you draw 2 windows and *then* await_input ?)
 
 # - then legit just comparative pre-processing stuff
+
+
+
+
+
+# def make_user_directory(ocr_user_name):
+#     """ create a folder for this user to store their data locally in an organised manner, if the user *already* has a folder (so we dont make one) return `False`, else return `True` """
+#     # -- if this user doesnt have a folder already, create it, and return True
+#     try:
+#         os.mkdir(f"{ocr_user_name}_data") 
+#         return True
+#     # -- if we throw this exception we already have the folder, so return False
+#     except FileExistsError:
+#             return False
+#     # -- 
+#     finally:
