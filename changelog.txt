@@ -17,7 +17,12 @@ started : 30/11/2022
 
 
 
+[day-2]
 
+- had to sign up at a new gym, plus a hospital apt so starting working late
+- again lot of experimenting beforehand
+- setup basic test environment with test images
+- now accurately saving usernames and saving images in organised folders of user data 
 
 
 

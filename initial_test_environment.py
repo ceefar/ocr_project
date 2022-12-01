@@ -68,21 +68,29 @@ def img_to_greyscale(img):
     return grey_img
 
 # -- optical character recognition --
-def draw_word_boxes(img):
-    active_user_name = "" 
+def draw_word_boxes(img, active_user_name):
     image_data = pytesseract.image_to_data(img, output_type=Output.DICT)
+    user_name_words_y_pos = 0
     for i, word in enumerate(image_data["text"]):
         if word != "":
             x, y = image_data["left"][i], image_data["top"][i]
             w, h = image_data["width"][i], image_data["height"][i]
-            # [ todo! ] 
-            # -- use a decorator for this 100 --
-            # -- for the very first word in the list of words, grab it and save it as the profile name, note is specifically for this image, hence the need for a decorator --
-            if i == 4: # <= much sus, confirm the specifics here while working with set of test imgs 
-                cv2.rectangle(img, (x,y), (x + w, y + h), (0, 255, 0), 3) # note rect and putText can be run outside of this if statement, just doing like this for pfp (again, hence the need for decorator lol)
-                cv2.putText(img, word, (x, y-16), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2)
-                print(word)
-                active_user_name = word
+            # -- the first profile word is always word 4 (i wanna say due the fact its finding 3 artifacts beforehand consistently but i will confirm this shortly) --
+            if y >= 4:
+                # -- only set this if its not been set yet -- 
+                if not user_name_words_y_pos:
+                    user_name_words_y_pos = y           
+                # -- if this word is on the same y pos as the first word in the username, draw word in rect, print word to console, save word--                         
+                if y == user_name_words_y_pos:
+                    cv2.rectangle(img, (x,y), (x + w, y + h), (0, 255, 0), 3) # note rect and putText can be run outside of this if statement, just doing like this for pfp (again, hence the need for decorator lol)
+                    cv2.putText(img, word, (x, y-16), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2)
+                    print(f"{i} : {word = }, {x = }, {y =}")
+                    # -- if theres already a word in there - i.e. the username is a multiline string --
+                    if len(active_user_name) > 1: 
+                        active_user_name += f"_{word}" # using an underline as this is only used for the directory name
+                    # -- else just save it to the var --
+                    else:
+                        active_user_name = word                            
     # -- show the image --
     show_img_in_window(img)
     # -- return the user name --
@@ -121,26 +129,31 @@ def main(img):
     # -- show images --
     show_img_in_window(profile_name_img)
     show_img_in_window(profile_name_img_grey)
+    # -- initialise these first so we can send them and get them back seperately -- 
+    un, un_grey = "", ""
     # -- draw word boxes --
-    un = draw_word_boxes(profile_name_img) # un = username
-    un_grey = draw_word_boxes(profile_name_img_grey)
+    un = draw_word_boxes(profile_name_img, un) # un = username
+    un_grey = draw_word_boxes(profile_name_img_grey, un_grey)
     # -- create a user directory if we dont have one already for this user --
     user_dir = make_user_dir(un)
     # -- save images --
     cv2.imwrite(f"user_data/{user_dir}/profile_{un}_img.png", profile_name_img)
-    cv2.imwrite(f"user_data/{user_dir}/profile_{un_grey}_img_grey.png", profile_name_img_grey)
+    cv2.imwrite(f"user_data/{user_dir}/profile_{un}_img_grey.png", profile_name_img_grey) # using the same name here incase there are issues with greyscale ocr, we still wanna save the file
     
 # [driver]
 if __name__ == "__main__":
-    img_list = image_1, image_2, image_3, image_4, image_5
+    # img_list = [image_1, image_2, image_3, image_4, image_5]
+    img_list = [image_1]
     for img in img_list:
         main(img)
 
 
 
 # [todo]
-# - first grab some comparative images so can test this appropriately at various stages
-# - then...
+# - add to changelog what ive done... i.e. first grab some comparative images so can test this appropriately at various stages
+
+# - chunk up the function a bit
+# - test with all test imgs
 
 
 
