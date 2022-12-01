@@ -23,7 +23,9 @@ started : 30/11/2022
 - again lot of experimenting beforehand
 - setup basic test environment with test images
 - now accurately saving usernames and saving images in organised folders of user data 
-
+- moved imgs to test_imgs folder
+- removed manual looping
+    - now dynamically loops through all files in test_imgs folder in main()
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

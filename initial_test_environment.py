@@ -18,17 +18,17 @@ from matplotlib import pyplot as plt # < will use for plotting shortly
 # [setup tesseract]
 pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" # < [ REQUIREMENT ]
 
-# [vars]
-original_img_1 = cv2.imread("profile_stats_test_image_1.png")
-image_1 = original_img_1.copy()
-original_img_2 = cv2.imread("profile_stats_test_image_2.png")
-image_2 = original_img_2.copy()
-original_img_3 = cv2.imread("profile_stats_test_image_3.png")
-image_3 = original_img_3.copy()
-original_img_4 = cv2.imread("profile_stats_test_image_4.png")
-image_4 = original_img_4.copy()
-original_img_5 = cv2.imread("profile_stats_test_image_5.png")
-image_5 = original_img_5.copy()
+# # [vars]
+# original_img_1 = cv2.imread("profile_stats_test_image_1.png")
+# image_1 = original_img_1.copy()
+# original_img_2 = cv2.imread("profile_stats_test_image_2.png")
+# image_2 = original_img_2.copy()
+# original_img_3 = cv2.imread("profile_stats_test_image_3.png")
+# image_3 = original_img_3.copy()
+# original_img_4 = cv2.imread("profile_stats_test_image_4.png")
+# image_4 = original_img_4.copy()
+# original_img_5 = cv2.imread("profile_stats_test_image_5.png")
+# image_5 = original_img_5.copy()
 
 # [funcs]
 # -- handle windows --
@@ -142,9 +142,12 @@ def main(img):
     
 # [driver]
 if __name__ == "__main__":
-    img_list = [image_1, image_2, image_3, image_4, image_5]
-    for img in img_list:
-        main(img)
+    img_dir = "test_imgs/"
+    for file in os.listdir(img_dir):
+        if file.endswith(".png"):
+            original_img = cv2.imread(f"{img_dir}{file}")
+            image_1 = original_img.copy()
+            main(image_1)
 
 
 
