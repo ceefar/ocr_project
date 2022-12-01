@@ -19,8 +19,16 @@ from matplotlib import pyplot as plt # < will use for plotting shortly
 pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" # < [ REQUIREMENT ]
 
 # [vars]
-original_img = cv2.imread("profile_stats_test_image_1.png")
-image = original_img.copy()
+original_img_1 = cv2.imread("profile_stats_test_image_1.png")
+image_1 = original_img_1.copy()
+original_img_2 = cv2.imread("profile_stats_test_image_2.png")
+image_2 = original_img_2.copy()
+original_img_3 = cv2.imread("profile_stats_test_image_3.png")
+image_3 = original_img_3.copy()
+original_img_4 = cv2.imread("profile_stats_test_image_4.png")
+image_4 = original_img_4.copy()
+original_img_5 = cv2.imread("profile_stats_test_image_5.png")
+image_5 = original_img_5.copy()
 
 # [funcs]
 # -- handle windows --
@@ -100,12 +108,12 @@ def make_user_dir(ocr_user_name:str):
         return f"{ocr_user_name}_data"
 
 # -- main -- 
-def main():
+def main(img):
     """ by the way this is really still just me testing out the functionality """
     # --
     make_user_data_dir()
     # -- profile name slice --
-    profile_name_img = crop_image(image)
+    profile_name_img = crop_image(img)
     profile_name_img_grey = img_to_greyscale(profile_name_img)
     # -- resize after crop/slice --
     profile_name_img = get_resized_img(profile_name_img, 2)
@@ -124,7 +132,9 @@ def main():
     
 # [driver]
 if __name__ == "__main__":
-    main()
+    img_list = image_1, image_2, image_3, image_4, image_5
+    for img in img_list:
+        main(img)
 
 
 
