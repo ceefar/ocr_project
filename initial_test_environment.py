@@ -80,29 +80,30 @@ def draw_word_boxes(img):
     # -- return the user name --
     return active_user_name
 
-# -- get or make directory --
-def make_directory(ocr_user_name:str, type:str="userdir"):
-    """ type
-        - `userdir` : default
-            - create a folder for this user to store their data locally in an organised manner
-        - `userroot` 
-            - create the root folder for all user directories so things are appropriately organised """
-    # -- if this user doesnt have a folder already, create it --
+# -- handle directories --
+def make_user_data_dir():
+    """ initially create the root level folder to store all of the users data directories so everything is organised """
+    # -- if the root user folder doesnt exist already, create it --
     try:
-        if type == "userdir":
-            os.mkdir(f"{ocr_user_name}_data")
-        elif type == "userroot":
-            os.mkdir(f"user_data")            
-    # -- if we throw this exception we already have the folder, so just pass --
+        os.mkdir(f"user_data")
     except FileExistsError:
             pass
-    # -- regardless of if we made the folder now or not, return the directory --
+
+def make_user_dir(ocr_user_name:str):
+    """ create a folder for this user to store their data locally in an organised manner, returns created/desired path path as a string """
+    # -- if this user doesnt have a folder already, create it --
+    try:
+        os.mkdir(f"user_data/{ocr_user_name}_data")
+    except FileExistsError:
+            pass
     finally:
         return f"{ocr_user_name}_data"
 
 # -- main -- 
 def main():
     """ by the way this is really still just me testing out the functionality """
+    # --
+    make_user_data_dir()
     # -- profile name slice --
     profile_name_img = crop_image(image)
     profile_name_img_grey = img_to_greyscale(profile_name_img)
@@ -116,8 +117,7 @@ def main():
     un = draw_word_boxes(profile_name_img) # un = username
     un_grey = draw_word_boxes(profile_name_img_grey)
     # -- create a user directory if we dont have one already for this user --
-    user_dir = make_directory(un)
-
+    user_dir = make_user_dir(un)
     # -- save images --
     cv2.imwrite(f"user_data/{user_dir}/profile_{un}_img.png", profile_name_img)
     cv2.imwrite(f"user_data/{user_dir}/profile_{un_grey}_img_grey.png", profile_name_img_grey)
@@ -128,12 +128,10 @@ if __name__ == "__main__":
 
 
 
-# [rnrn]
-# - no cap before doing below notes
-# - do the two previous repo readmes, improve the profile readme, etc
-# - defo do gif stuff
-# - try to get pages for old nhs app looking clean as you really arent doing it justice
-# - consider a projects readme repo (which will make a webpage over the christmas as a project)
+# [todo]
+# - first grab some comparative images so can test this appropriately at various stages
+# - then...
+
 
 
 # [notes]
@@ -156,15 +154,9 @@ if __name__ == "__main__":
 
 
 
-
-# def make_user_directory(ocr_user_name):
-#     """ create a folder for this user to store their data locally in an organised manner, if the user *already* has a folder (so we dont make one) return `False`, else return `True` """
-#     # -- if this user doesnt have a folder already, create it, and return True
-#     try:
-#         os.mkdir(f"{ocr_user_name}_data") 
-#         return True
-#     # -- if we throw this exception we already have the folder, so return False
-#     except FileExistsError:
-#             return False
-#     # -- 
-#     finally:
+# [rnrn]
+# - no cap before doing below notes
+# - do the two previous repo readmes, improve the profile readme, etc
+# - defo do gif stuff
+# - try to get pages for old nhs app looking clean as you really arent doing it justice
+# - consider a projects readme repo (which will make a webpage over the christmas as a project)
