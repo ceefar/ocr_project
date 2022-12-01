@@ -1,0 +1,5 @@
+just notes for some new vscode shortcuts i wanna start using
+take this with you from now on
+ig make it a cheatsheet and/or find cheatsheets
+
+split window : crtl + \ 
