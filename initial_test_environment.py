@@ -33,7 +33,7 @@ def show_img_in_window(img:np.ndarray, name="Preview"):
     # -- resize so it fits on the screen, as its a large image --
     cv2.imshow(f"{name}", get_resized_img(img))
     # -- await input and destroy windows --
-    cv2.waitKey(0)    
+    # cv2.waitKey(0)    
     cv2.destroyAllWindows()
 
 # -- image manipulation --
@@ -104,7 +104,7 @@ def make_user_dir(ocr_user_name:str):
         return f"{ocr_user_name}_data"
 
 # -- main -- 
-def main(img):
+def main(img, i):
     """ by the way this is really still just me testing out the functionality """
     # --
     make_user_data_dir()
@@ -122,8 +122,13 @@ def main(img):
     # -- draw word boxes --
     un = draw_word_boxes(profile_name_img, un) 
     un_grey = draw_word_boxes(profile_name_img_grey, un_grey)
-    # -- create a user directory if we dont have one already for this user --
-    user_dir = make_user_dir(un)
+
+    # [ new-test! ]
+    # - replacing named user directories with ints while running tests large numbers of images --
+
+    user_dir = make_user_dir(f"img_{i+1}")
+    print(f"{user_dir = }")
+
     # -- save images --
     cv2.imwrite(f"user_data/{user_dir}/profile_{un}_img.png", profile_name_img)
     cv2.imwrite(f"user_data/{user_dir}/profile_{un}_img_grey.png", profile_name_img_grey) # using the same name here incase there are issues with greyscale ocr, we still wanna save the file
@@ -131,46 +136,10 @@ def main(img):
 # [driver]
 if __name__ == "__main__":
     img_dir = "test_imgs/"
-    for file in os.listdir(img_dir):
+    for i, file in enumerate(os.listdir(img_dir)):
         if file.endswith(".png"):
             original_img = cv2.imread(f"{img_dir}{file}")
-            image_1 = original_img.copy()
-            main(image_1)
+            image_1 = original_img.copy()            
+            main(image_1, i)
 
 
-
-# [todo]
-# - do actually need a larger set of test images yanno
-# - chunk up the function a bit
-# - test with all test imgs
-# - this kids tut, various tuts, various stackoverflow
-# - yo cant wait to do multithreading yanno, this is guna be so sick
-
-
-
-# [notes]
-# get it into folders so its not annoying af
-# - just do by name for now, make new name for person if folder doesnt exist, else use that folder
-# - grab the code from the old reddit project
-# - get 2 or 3 images to test this i == 4 thing as is kinda sus, if its fine continue ig but should find out how this works for sure at some point later or tomo
-
-# - then do this decorator thing 100%
-#   - so that one will be a pfp decorator ig
-
-# - then do one to draw the rank
-#   - this one needs some fixing too as its not really accurate and ideally need a way bigger pool of ranks
-
-# - then ig improve the text functions a tad tho tbf this is fine for testing
-# - then ig try and get that grid thing setup again, but maybe even better?! (can you draw 2 windows and *then* await_input ?)
-
-# - then legit just comparative pre-processing stuff
-
-
-
-
-# [rnrn]
-# - no cap before doing below notes
-# - do the two previous repo readmes, improve the profile readme, etc
-# - defo do gif stuff
-# - try to get pages for old nhs app looking clean as you really arent doing it justice
-# - consider a projects readme repo (which will make a webpage over the christmas as a project)
