@@ -153,7 +153,7 @@ def check_if_name_accurate(user_name:str):
     # -- return true if the name is in the verified list else return false -- 
     return True if true_name in verified_names else False
 
-# [driver]
+# [driver] 
 if __name__ == "__main__":
     main()
 
