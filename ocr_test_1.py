@@ -11,40 +11,11 @@ import os
 # [setup tesseract]
 pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" # < [ REQUIREMENT ]
 
-# -- optical character recognition --
-def draw_word_boxes(img, active_user_name):
-    """ """
-    image_data = pytesseract.image_to_data(img, output_type=Output.DICT)
-    user_name_words_y_pos = 0
-    word_list = []
-    for i, word in enumerate(image_data["text"]):
-        if word != "":
-            x, y = image_data["left"][i], image_data["top"][i]
-            w, h = image_data["width"][i], image_data["height"][i]
-            # -- the first profile word is always word 4 (i wanna say due the fact its finding 3 artifacts beforehand consistently but i will confirm this shortly) --
-            if y >= 4:
-                # -- only set this if it hasnt been set yet -- 
-                if not user_name_words_y_pos:
-                    user_name_words_y_pos = y           
-                # -- if this word is on the same y pos as the first word in the username, draw word in rect, print word to console, save word--          
-                if y <= user_name_words_y_pos + 10 and y >= user_name_words_y_pos - 10:
-                    cv2.rectangle(img, (x,y), (x + w, y + h), (0, 255, 0), 3) # note rect and putText can be run outside of this if statement, just doing like this for pfp (again, hence the need for decorator lol)
-                    cv2.putText(img, word, (x, y-16), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2)
-                    # -- if theres already a word in there - i.e. the username is a multiline string --
-                    if len(active_user_name) > 1: 
-                        active_user_name += f"_{word}" # using an underline as this is only used for the directory name
-                    # -- else just save it to the var --
-                    else:
-                        active_user_name = word  
-        # -- finally save all the words so we can check the exact outputs later --   
-        word_list.append(word)                           
-    # -- return the user name --
-    return img, active_user_name, word_list
-
 def create_window(name:str="Preview"):
     """ create window with given name """
     cv2.namedWindow(f"{name}", cv2.WINDOW_AUTOSIZE)
 
+# -- window + image handling --
 def show_img_in_window(img:np.ndarray, name="Preview"):
     """ show given image in chosen window, and wait for key press 
     - image (required)
@@ -107,6 +78,36 @@ def run_image_pre_processing(img):
     images = [img, th1, th2, th3]
     return images 
 
+# -- optical character recognition --
+def draw_word_boxes(img, active_user_name):
+    """ """
+    image_data = pytesseract.image_to_data(img, output_type=Output.DICT)
+    user_name_words_y_pos = 0
+    word_list = []
+    for i, word in enumerate(image_data["text"]):
+        if word != "":
+            x, y = image_data["left"][i], image_data["top"][i]
+            w, h = image_data["width"][i], image_data["height"][i]
+            # -- the first profile word is always word 4 (i wanna say due the fact its finding 3 artifacts beforehand consistently but i will confirm this shortly) --
+            if y >= 4:
+                # -- only set this if it hasnt been set yet -- 
+                if not user_name_words_y_pos:
+                    user_name_words_y_pos = y           
+                # -- if this word is on the same y pos as the first word in the username, draw word in rect, print word to console, save word--          
+                if y <= user_name_words_y_pos + 10 and y >= user_name_words_y_pos - 10:
+                    cv2.rectangle(img, (x,y), (x + w, y + h), (0, 255, 0), 3) # note rect and putText can be run outside of this if statement, just doing like this for pfp (again, hence the need for decorator lol)
+                    cv2.putText(img, word, (x, y-16), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2)
+                    # -- if theres already a word in there - i.e. the username is a multiline string --
+                    if len(active_user_name) > 1: 
+                        active_user_name += f"_{word}" # using an underline as this is only used for the directory name
+                    # -- else just save it to the var --
+                    else:
+                        active_user_name = word  
+        # -- finally save all the words so we can check the exact outputs later --   
+        word_list.append(word)                           
+    # -- return the user name --
+    return img, active_user_name, word_list
+
 # -- main -- 
 def main():
     make_user_data_dir()
@@ -117,10 +118,9 @@ def main():
             original_img = cv2.imread(f"{file}", 0)
             img_copy = original_img.copy()  
             # -- run ocr on the image and draw boxes around those words, get back the username to use for the directory name -- 
-            user_name = ""
-            img_word_list = []
+            user_name, img_word_list = "", []
             img, user_name, img_word_list = draw_word_boxes(img_copy, user_name)
-            # -- start some simple qa -- 
+            # -- calculate and log some simple qa -- 
             got_right_name = check_if_name_accurate(user_name)
             msg = f"{user_name.replace('_',' ')} - Success!" if got_right_name else f"{user_name} - Failed"
             if got_right_name:
@@ -156,9 +156,6 @@ def check_if_name_accurate(user_name:str):
 # [driver]
 if __name__ == "__main__":
     main()
-
-
-
 
 
 # -- notes --
