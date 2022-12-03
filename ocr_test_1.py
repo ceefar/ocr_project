@@ -97,6 +97,16 @@ def create_user_info_file(user_dir, user_name, img_word_list):
             if a_word:
                 f.write(f"{a_word}\n")
 
+# -- image pre-processing --
+def run_image_pre_processing(img):
+    """ performs simple preprocessing (blur, binary, gaussian blur), on an image and returns the resulting images in a list """
+    img = cv2.medianBlur(img, 5)
+    ret, th1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY) # ret = return (i believe for success or failure), should just use _ but seems to be convention to leave it?
+    th2 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
+    th3 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+    images = [img, th1, th2, th3]
+    return images 
+
 # -- main -- 
 def main():
     make_user_data_dir()
@@ -115,19 +125,24 @@ def main():
             msg = f"{user_name.replace('_',' ')} - Success!" if got_right_name else f"{user_name} - Failed"
             if got_right_name:
                 successful_extractions += 1
-            print(msg)
+            print(f"{msg}")
             # -- create dir for user --        
             if user_name:
                 user_dir = make_user_dir(f"{user_name}")  
             else:
-                user_dir = make_user_dir(f"user_{i}") # temporary while testing - `i` here is the file index 
-            # -- save images --
-            cv2.imwrite(f"user_data/{user_dir}/profile_{user_name}_img.png", img)
+                user_dir = make_user_dir(f"user_{i}") # temporary while testing - `i` here is the file index
+            # -- run pre-processing --
+            preprocessed_img_list = run_image_pre_processing(img) 
+            # -- save preprocessed images, and initial image too --
+            titles = ['Original Image', 'Global Thresholding (v = 127)', 'Adaptive Mean Thresholding', 'Adaptive Gaussian Thresholding']
+            for an_img, a_title in zip(preprocessed_img_list, titles):
+                cv2.imwrite(f"user_data/{user_dir}/profile_{user_name}_img_{a_title}.png", an_img)
+            cv2.imwrite(f"user_data/{user_dir}/profile_{user_name}_img.png", img)            
             # -- save info --
             create_user_info_file(user_dir, user_name, img_word_list)
             plt.show()
     # -- finally, print the qa results --
-    print(f"{successful_extractions} of 6 Successfully Extracted [ {((successful_extractions/6) * 100):.0f}% ]")
+    print(f"\n{successful_extractions} of 6 Successfully Extracted [ {((successful_extractions/6) * 100):.0f}% ]\n")
 
 # -- development testing x debug area --
 def check_if_name_accurate(user_name:str):
@@ -142,7 +157,14 @@ def check_if_name_accurate(user_name:str):
 if __name__ == "__main__":
     main()
 
+
+
+
+
 # -- notes --
+# - so first do cropping properly, adding a bit more space to the right hand side too
+#   - could just use pillow to draw here tbf
+
 # - save the qa as a file at the root directory duhhhh
 # - get the preprocessing loop in here
 # - get it in streamlit

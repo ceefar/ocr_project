@@ -33,5 +33,8 @@ started : 30/11/2022
 
 - working on preprocessing mostly today
 - added test.py, improved preprocessing to pfp test images, now working on the previously not working test_1 img, now to test the rest 
+- various, to add
+- basic qa 
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
