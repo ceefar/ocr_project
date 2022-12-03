@@ -1,12 +1,6 @@
 # author
 #   - ceefar
 
-# project brief
-#   - using optical character recognition, data viz, and data analytics 
-#   - to programatically process and collate data from a popular mobile game title
-#   - will further clarify the specifics in future
-#   - may also inlcude some databasing too as why not
-
 # [imports]
 import cv2
 from pytesseract import pytesseract
@@ -25,7 +19,7 @@ def create_window(name:str="Preview"):
     """ create window with given name """
     cv2.namedWindow(f"{name}", cv2.WINDOW_AUTOSIZE)
 
-def show_img_in_window(img:np.ndarray, name="Preview", want_wait=False):
+def show_img_in_window(img:np.ndarray, name="Preview", want_wait=True):
     """ show given image in chosen window, and wait for key press 
     - image (required)
     - name (optional)
@@ -143,7 +137,6 @@ def main(img, i):
         os.rename(f"user_data/{user_dir}", f"user_data/{user_dir}_yes")
     else:
         os.rename(f"user_data/{user_dir}", f"user_data/{user_dir}_no")
-
 
 
 # [driver]
