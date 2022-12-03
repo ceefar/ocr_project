@@ -25,7 +25,7 @@ def create_window(name:str="Preview"):
     """ create window with given name """
     cv2.namedWindow(f"{name}", cv2.WINDOW_AUTOSIZE)
 
-def show_img_in_window(img:np.ndarray, name="Preview"):
+def show_img_in_window(img:np.ndarray, name="Preview", want_wait=False):
     """ show given image in chosen window, and wait for key press 
     - image (required)
     - name (optional)
@@ -34,7 +34,8 @@ def show_img_in_window(img:np.ndarray, name="Preview"):
     # -- resize so it fits on the screen, as its a large image --
     cv2.imshow(f"{name}", get_resized_img(img))
     # -- await input and destroy windows --
-    # cv2.waitKey(0)    
+    if want_wait:
+        cv2.waitKey(0)    
     cv2.destroyAllWindows()
 
 # -- image manipulation --
@@ -142,6 +143,7 @@ def main(img, i):
         os.rename(f"user_data/{user_dir}", f"user_data/{user_dir}_yes")
     else:
         os.rename(f"user_data/{user_dir}", f"user_data/{user_dir}_no")
+
 
 
 # [driver]

@@ -15,7 +15,7 @@ started : 30/11/2022
 - adds name to filename string
 - spend most time checking a few tutorials, reading up on ocr, and then testing things out and playing around with things initially, as well as a quick catch up on matplotlib since is useful for plotting
 
-
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 [day-2]
 
@@ -27,5 +27,11 @@ started : 30/11/2022
 - removed manual looping
     - now dynamically loops through all files in test_imgs folder in main()
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+[day-3-saturday]
+
+- working on preprocessing mostly today
+- added test.py, improved preprocessing to pfp test images, now working on the previously not working test_1 img, now to test the rest 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
