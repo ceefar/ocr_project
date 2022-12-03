@@ -13,6 +13,7 @@ from pytesseract import pytesseract
 from pytesseract import Output
 import numpy as np # technically only using right now for the type hints btw
 import os # for file handling
+import re # for regex
 from matplotlib import pyplot as plt # < will use for plotting shortly
 
 # [setup tesseract]
@@ -110,6 +111,7 @@ def main(img, i):
     make_user_data_dir()
     # -- profile name slice --
     profile_name_img = crop_image(img)
+    cropped_img = profile_name_img # store this before we do anything else to it, yes ik just use a copy but testing still 
     profile_name_img_grey = img_to_greyscale(profile_name_img)
     # -- resize after crop/slice --
     profile_name_img = get_resized_img(profile_name_img, 2)
@@ -123,16 +125,25 @@ def main(img, i):
     un = draw_word_boxes(profile_name_img, un) 
     un_grey = draw_word_boxes(profile_name_img_grey, un_grey)
 
-    # [ new-test! ]
+    # [ new! ]
     # - replacing named user directories with ints while running tests large numbers of images --
-
     user_dir = make_user_dir(f"img_{i+1}")
-    print(f"{user_dir = }")
-
+    
     # -- save images --
+    cv2.imwrite(f"user_data/{user_dir}/profile_{un}_img_og.png", cropped_img)
     cv2.imwrite(f"user_data/{user_dir}/profile_{un}_img.png", profile_name_img)
     cv2.imwrite(f"user_data/{user_dir}/profile_{un}_img_grey.png", profile_name_img_grey) # using the same name here incase there are issues with greyscale ocr, we still wanna save the file
     
+    # [ new! ]
+    # - rename dependent on success or failure of grabbing username
+    # - if username has any letter or number then we'll just say yes for now, sure its not truly correct but its an accuracy problem, rn we're dealing with actually getting the data not the accuracy of it  
+    match = re.search(r'[a-zA-Z0-9]', un) 
+    if match:
+        os.rename(f"user_data/{user_dir}", f"user_data/{user_dir}_yes")
+    else:
+        os.rename(f"user_data/{user_dir}", f"user_data/{user_dir}_no")
+
+
 # [driver]
 if __name__ == "__main__":
     img_dir = "test_imgs/"
@@ -141,5 +152,4 @@ if __name__ == "__main__":
             original_img = cv2.imread(f"{img_dir}{file}")
             image_1 = original_img.copy()            
             main(image_1, i)
-
 
