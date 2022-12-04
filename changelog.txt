@@ -33,9 +33,8 @@ started : 30/11/2022
 
 - working on preprocessing mostly today
 - added test.py, improved preprocessing to pfp test images, now working on the previously not working test_1 img, now to test the rest 
-- various, to add
+- various, to add like addition of basic validation, other extra qa things, etc
 - basic qa 
-- few other things to add from yesterday tbf here too, like the remaining qa things, etc
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -44,8 +43,10 @@ started : 30/11/2022
 - using test imgs path for looping in new ocr_test, so testing 25 images now
 - added succesful extractions to qa + so general light improvements to qa section
 - added crop functionality, as above 25 test imgs, we now take the original images and crop them (instead of taking the pre-cropped img while testing)
-- improved crop functionality with switch for various required image sections for pfp page 
-
+- improved crop functionality with switch for various required image sections for pfp page
+- improved qa
+- currently at an improved 70% success rate with ocr extraction on names and actually is slightly higher as 2 user names have hanzi characters 
+    - after checking, actually currently at an 80% success x accuracy rate (by that i mean the success rate for 100% accuracy of ocr)
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

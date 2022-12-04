@@ -128,6 +128,7 @@ def main():
     make_user_data_dir()
     successful_extractions = 0 # counters for quality assurance while developing, because we're looping all the files in the current dir...
     total_extractions = 0 # we want to only count an extraction on a file if its valid, and not just if it exists (i.e. using len or the index)
+    failed_extractions_list = [] # will store the names of all failed ocr runs for logging, etc
     path = "test_imgs"
     for i, file in enumerate(os.listdir(path)):
         if file.endswith(".png"):
@@ -148,6 +149,8 @@ def main():
             msg = f"{user_name.replace('_',' ')} - Success!" if got_right_name else f"{user_name} - Failed"
             if got_right_name:
                 successful_extractions += 1
+            else:
+                failed_extractions_list.append(user_name)
             total_extractions += 1
             print(f"{msg}")
             # -- create dir for user --        
@@ -167,6 +170,8 @@ def main():
             plt.show()
     # -- finally, print the qa results --
     print(f"\n{successful_extractions} of {total_extractions} Successfully Extracted [ {((successful_extractions/total_extractions) * 100):.0f}% ]\n")
+    print(f"Failed Users\n- - - - - - - - - - -")
+    [print(f"- {name}") for name in failed_extractions_list]
 
 # -- development testing x debug area --
 def check_if_name_accurate(user_name:str):
@@ -186,16 +191,17 @@ if __name__ == "__main__":
 
 
 # -- notes --
-# do the 2 new crops
-# - save all versions for now maybe?
-# improve the crop and try to get it wokring fully
-# test again
-# consider pillow to draw text
-# have all text parts sorted including rank  mmn
+# dw about improving ocr accuracy right now...
+
+# so next up save the rank
+# then sort out the saves in each folder to be cleaner, have the og image, in full size and colour there too
+# - ensure the same for the info file now including the rank and like actually formatting now theres more than just 1 piece of data 
 # save qa file in the root directory duh, could use a log file tbf
-# get it in streamlit
-# get some ss or gif of current state and do the readme
-# then either start doing average ranks aram thing (which honestly is a decent shout and could even include basic databasing too)
-# or hop into the more advanced computer vision and bot stuff but doing fast window capture and cascade classifiers on wr testing
+# consider pillow to draw text
+# get it in PyQt5
+
+# then start playing around with live video capture
+
+# get some ss or gif of current state and do the readme [<=tomo]
 
 # -- end of file -- 
