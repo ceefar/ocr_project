@@ -104,27 +104,42 @@ def draw_word_boxes(img, active_user_name):
                     else:
                         active_user_name = word  
         # -- finally save all the words so we can check the exact outputs later --   
-        word_list.append(word)                           
+        word_list.append(word)   
+    # -- new - do a quick clean on the username incase it contains any invalid characters for saving --                        
+    active_user_name = clean_username(active_user_name)
     # -- return the user name --
     return img, active_user_name, word_list
+
+def clean_username(username:str):
+    """ made sense to make this a function incase wanna expand this in future """
+    return username.replace('"','')
 
 # -- main -- 
 def main():
     make_user_data_dir()
-    successful_extractions = 0 # temp counter for quality assurance while developing
-    for i, file in enumerate(os.listdir()):
+    successful_extractions = 0 # counters for quality assurance while developing, because we're looping all the files in the current dir...
+    total_extractions = 0 # we want to only count an extraction on a file if its valid, and not just if it exists (i.e. using len or the index)
+    path = "test_imgs"
+    for i, file in enumerate(os.listdir(path)):
         if file.endswith(".png"):
             # -- read in the image and save a copy --
-            original_img = cv2.imread(f"{file}", 0)
+            original_img = cv2.imread(f"{path}/{file}", 0)
             img_copy = original_img.copy()  
+
+            # [note!] 
+            # - think about proper abstraction for this functionality now that going to implement different types of crop
+            # -- new - crop the image to just the pfp section --
+            profile_name_img = crop_image(img_copy)
+
             # -- run ocr on the image and draw boxes around those words, get back the username to use for the directory name -- 
             user_name, img_word_list = "", []
-            img, user_name, img_word_list = draw_word_boxes(img_copy, user_name)
+            img, user_name, img_word_list = draw_word_boxes(profile_name_img, user_name)
             # -- calculate and log some simple qa -- 
             got_right_name = check_if_name_accurate(user_name)
             msg = f"{user_name.replace('_',' ')} - Success!" if got_right_name else f"{user_name} - Failed"
             if got_right_name:
                 successful_extractions += 1
+            total_extractions += 1
             print(f"{msg}")
             # -- create dir for user --        
             if user_name:
@@ -142,12 +157,13 @@ def main():
             create_user_info_file(user_dir, user_name, img_word_list)
             plt.show()
     # -- finally, print the qa results --
-    print(f"\n{successful_extractions} of 6 Successfully Extracted [ {((successful_extractions/6) * 100):.0f}% ]\n")
+    print(f"\n{successful_extractions} of {total_extractions} Successfully Extracted [ {((successful_extractions/6) * 100):.0f}% ]\n")
 
 # -- development testing x debug area --
 def check_if_name_accurate(user_name:str):
     """ check the verfied names from a list of the actual names to start getting some basic quality assurance data back during development """
-    verified_names = ["iSmurFromlronV", "lumpyflump1", "Rhaast so Cuite", "SUPER MARIO", "Malignat Force"]
+    verified_names = ["iSmurFromlronV", "lumpyflump1", "Rhaast so Cuite", "SUPER MARIO", "Malignat Force", \
+                        "Saint Kiril", "Ultrasogge", "Flames123" "Sw3diN", "Samirtank", "Ceedotrun"]
     # -- reformat the name to check for accuracy -- 
     true_name = user_name.replace("_", " ")
     # -- return true if the name is in the verified list else return false -- 
@@ -159,13 +175,16 @@ if __name__ == "__main__":
 
 
 # -- notes --
-# - so first do cropping properly, adding a bit more space to the right hand side too
-#   - could just use pillow to draw here tbf
-
-# - save the qa as a file at the root directory duhhhh
-# - get the preprocessing loop in here
-# - get it in streamlit
-# - save it to repo, and get some ss or gif of current state and do the readme
-#   - note current state doesnt matter, actually would quite like to document the learning journey on this one too tbf 
+# do the initial crop
+# - save all versions for now maybe?
+# improve the crop and try to get it wokring fully
+# test again
+# consider pillow to draw text
+# have all text parts sorted including rank  mmn
+# save qa file in the root directory duh, could use a log file tbf
+# get it in streamlit
+# get some ss or gif of current state and do the readme
+# then either start doing average ranks aram thing (which honestly is a decent shout and could even include basic databasing too)
+# or hop into the more advanced computer vision and bot stuff but doing fast window capture on wr testing
 
 # -- end of file -- 

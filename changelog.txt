@@ -35,6 +35,17 @@ started : 30/11/2022
 - added test.py, improved preprocessing to pfp test images, now working on the previously not working test_1 img, now to test the rest 
 - various, to add
 - basic qa 
+- few other things to add from yesterday tbf here too, like the remaining qa things, etc
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+[day-4-sunday]
+
+- using test imgs path for looping in new ocr_test, so testing 25 images now
+- added succesful extractions to qa + so general light improvements to qa section
+- added crop functionality, as above 25 test imgs, we now take the original images and crop them (instead of taking the pre-cropped img while testing)
+
+
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
