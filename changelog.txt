@@ -44,7 +44,7 @@ started : 30/11/2022
 - using test imgs path for looping in new ocr_test, so testing 25 images now
 - added succesful extractions to qa + so general light improvements to qa section
 - added crop functionality, as above 25 test imgs, we now take the original images and crop them (instead of taking the pre-cropped img while testing)
-
+- improved crop functionality with switch for various required image sections for pfp page 
 
 
 

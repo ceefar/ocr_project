@@ -33,13 +33,22 @@ def get_resized_img(img:np.ndarray, size=0.9):
     img_copy = cv2.resize(img.copy(), (0, 0), fx=size, fy=size)
     return img_copy
 
-def crop_image(img:np.ndarray, slice_type:str="pfp"):
-    """ uses a copy of the image, returns slice based on `slice_type`
-    - pfp : profile picture & name section """
-    img_copy = img.copy()
-    if slice_type == "pfp":
-        img_slice = img_copy[290:470, 0:450] # pro pic and name @ page : profile stats - bars view
-    return img_slice
+def crop_image(img:np.ndarray, slice_type:str="pfp_name"): 
+    """ uses a copy of the image, returns slice based on `slice_type` 
+    - pfp : profile picture & name section """ 
+    img_copy = img.copy() 
+    # for page : profile stats - bars view (will refactor once i get to the point where this is relevant tbf) 
+    if slice_type == "pfp_all": # pro pic, name, and rank (not guna use but guna leave the slice in the switch for now anyways) 
+        img_slice = img_copy[290:470, 0:550] 
+    elif slice_type == "pfp_name_rank": 
+        img_slice = img_copy[340:450, 215:550] 
+    elif slice_type == "pfp_name": 
+        img_slice = img_copy[340:390, 215:550] 
+    elif slice_type == "pfp_rankicon": # rank and icon together 
+        img_slice = img_copy[390:450, 195:550] 
+    elif slice_type == "pfp_rank": # just the rank as word 
+        img_slice = img_copy[390:450, 260:550] 
+    return img_slice 
 
 # -- handle directories --
 def make_user_data_dir():
@@ -157,15 +166,17 @@ def main():
             create_user_info_file(user_dir, user_name, img_word_list)
             plt.show()
     # -- finally, print the qa results --
-    print(f"\n{successful_extractions} of {total_extractions} Successfully Extracted [ {((successful_extractions/6) * 100):.0f}% ]\n")
+    print(f"\n{successful_extractions} of {total_extractions} Successfully Extracted [ {((successful_extractions/total_extractions) * 100):.0f}% ]\n")
 
 # -- development testing x debug area --
 def check_if_name_accurate(user_name:str):
     """ check the verfied names from a list of the actual names to start getting some basic quality assurance data back during development """
     verified_names = ["iSmurFromlronV", "lumpyflump1", "Rhaast so Cuite", "SUPER MARIO", "Malignat Force", \
-                        "Saint Kiril", "Ultrasogge", "Flames123" "Sw3diN", "Samirtank", "Ceedotrun"]
+                        "Saint Kiril", "Ultrasogge", "Flames123" "Sw3diN", "Samirtank", "Ceedotrun", \
+                        "RIRIKOSTHEKILLER", "whocanbeatme", "Daniel99G", "EliottWave", "CHELENGEER", "meyern", "akzay69"]
     # -- reformat the name to check for accuracy -- 
-    true_name = user_name.replace("_", " ")
+    true_name = user_name.strip() # quick test
+    true_name = true_name.replace("_", " ")
     # -- return true if the name is in the verified list else return false -- 
     return True if true_name in verified_names else False
 
@@ -175,7 +186,7 @@ if __name__ == "__main__":
 
 
 # -- notes --
-# do the initial crop
+# do the 2 new crops
 # - save all versions for now maybe?
 # improve the crop and try to get it wokring fully
 # test again
@@ -185,6 +196,6 @@ if __name__ == "__main__":
 # get it in streamlit
 # get some ss or gif of current state and do the readme
 # then either start doing average ranks aram thing (which honestly is a decent shout and could even include basic databasing too)
-# or hop into the more advanced computer vision and bot stuff but doing fast window capture on wr testing
+# or hop into the more advanced computer vision and bot stuff but doing fast window capture and cascade classifiers on wr testing
 
 # -- end of file -- 

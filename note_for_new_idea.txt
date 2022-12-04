@@ -1,0 +1,5 @@
+
+use pattern matching to get ranks may be significantly faster than ocr btw, need to test this, and performance time it too
+
+
+
