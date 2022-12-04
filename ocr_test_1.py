@@ -193,7 +193,7 @@ if __name__ == "__main__":
 # -- notes --
 # dw about improving ocr accuracy right now...
 
-# so next up save the rank
+# so next up save the rank 
 # then sort out the saves in each folder to be cleaner, have the og image, in full size and colour there too
 # - ensure the same for the info file now including the rank and like actually formatting now theres more than just 1 piece of data 
 # save qa file in the root directory duh, could use a log file tbf
